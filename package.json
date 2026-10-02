@@ -1,0 +1,11 @@
+{
+  "name": "hellpitch",
+  "version": "0.7.0",
+  "private": true,
+  "description": "Hellpitch — duels de foot 1v1 dans un monde sombre, rendu PS2.",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "serve": "node build.mjs && npx --yes serve dist"
+  }
+}

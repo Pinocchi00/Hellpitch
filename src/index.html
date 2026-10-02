@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hellpitch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Spectral:ital,wght@0,400;0,500;1,400&family=Grenze+Gotisch:wght@700&display=swap" rel="stylesheet">
+<style>
+/*__CSS__*/
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+<div id="flash"></div>
+<div id="banner"></div>
+
+<section id="title" class="screen">
+  <div class="bar"><div class="inner"><h1>Hellpitch</h1><p class="tagline">Un ballon · Deux hommes · Aucun arbitre</p></div></div>
+  <div class="window"></div>
+  <div class="sheet"><div class="inner">
+    <div class="menu"><button class="btn primary" id="bCont">Continuer</button><button class="btn" id="bNew">Nouvelle histoire</button></div>
+    <div class="foot"><span>v0.7</span><span>Aucun arbitre n'a été blessé. Ils étaient déjà morts.</span></div>
+  </div></div>
+</section>
+
+<section id="story" class="screen hide">
+  <div class="bar"><div class="inner"><span class="chapter" id="stChap"></span></div></div>
+  <div class="window"></div>
+  <div class="sheet"><div class="inner">
+    <span class="who" id="dWho"></span>
+    <p class="dtext" id="dTxt"></p>
+    <div class="choices menu hide" id="dCh"></div>
+    <span class="more" id="dMore">Toucher pour continuer</span>
+  </div></div>
+</section>
+
+<section id="pick" class="screen hide">
+  <div class="bar"><div class="inner"><div><span class="chapter">Prologue</span><h2 class="ttl">Qui es-tu ?</h2></div></div></div>
+  <div class="window"></div>
+  <div class="sheet tall"><div class="inner">
+    <p class="quote"><b>Le Borgne</b>Choisis vite. Les indécis, on les enterre avec les autres.</p>
+    <div class="car"><button class="arrow" id="pPrev" aria-label="Poste précédent">‹</button><div id="postes"></div><button class="arrow" id="pNext" aria-label="Poste suivant">›</button></div>
+    <div class="dots" id="pDots"></div>
+    <label class="name"><span class="k">Ton nom</span><input id="pname" maxlength="16" value="Sans-Nom" autocomplete="off"></label>
+    <div class="menu"><button class="btn primary" id="bPick">C'est moi</button></div>
+  </div></div>
+</section>
+
+<section id="starter" class="screen hide">
+  <div class="bar"><div class="inner"><div><span class="chapter">Prologue</span><h2 class="ttl">Ce que les morts ont laissé</h2></div></div></div>
+  <div class="window"></div>
+  <div class="sheet tall"><div class="inner">
+    <p class="quote"><b>Le Borgne</b>Un seul. Les deux autres, je les revends au marché.</p>
+    <div id="stItems" class="cards"></div>
+    <div class="menu"><button class="btn primary" id="bStart">Prendre</button></div>
+  </div></div>
+</section>
+
+<section id="train" class="screen hide">
+  <div class="bar"><div class="inner"><div><span class="chapter">Entraînement</span><h2 class="ttl">Nuits sans sommeil</h2></div><div class="pow"><span class="k">Points</span><b id="tPts">0</b></div></div></div>
+  <div class="window"></div>
+  <div class="sheet tall"><div class="inner">
+    <p class="quote" id="tTip"></p>
+    <div class="plate trows" id="tRows"></div>
+    <div class="powline plate" id="tPow"></div>
+    <div id="tMarks"></div>
+    <div class="menu"><button class="btn primary" id="bTDone">Terminer</button><button class="btn" id="bTUndo">Annuler</button></div>
+  </div></div>
+</section>
+
+<section id="hub" class="screen hide">
+  <div class="bar"><div class="inner"><div><span class="k" id="hCh"></span><span class="v" id="hSt"></span></div><div class="pow"><span class="k">Puissance</span><b id="hPow"></b><span class="k" id="hEcl"></span></div></div></div>
+  <div class="window"></div>
+  <div class="sheet"><div class="inner">
+    <div class="who-row"><div><span class="v" id="hName"></span><span class="k" id="hPoste"></span></div><span class="k" id="hRec" style="text-align:right"></span></div>
+    <div class="slots" id="hSlots"></div>
+    <div class="fight plate" id="hFight"></div>
+    <div class="menu"><button class="btn primary" id="bFight">Combattre</button></div>
+    <div class="tabs"><button class="tab" id="bTrain">Entraînement<span class="badge" id="hPts"></span></button><button class="tab" id="bBag">Sac<span class="badge" id="hBagN"></span></button><button class="tab" id="bToTitle">Titre</button></div>
+  </div></div>
+</section>
+
+<section id="bag" class="screen hide">
+  <div class="bar"><div class="inner"><div><span class="chapter">Équipement</span><h2 class="ttl">Le sac</h2></div><div class="pow"><span class="k">Puissance</span><b id="bPow"></b><span class="k" id="bEcl"></span></div></div></div>
+  <div class="window"></div>
+  <div class="sheet tall"><div class="inner">
+    <div><div class="sect"><span class="k">Porté</span></div><div class="slots" id="bEq"></div></div>
+    <div><div class="bagbar"><div class="chips" id="bChips"></div><button class="chip" id="bSort"></button></div><div class="grid" id="bGrid"></div></div>
+    <div class="menu"><button class="btn" id="bBagClose">Retour au camp</button></div>
+  </div></div>
+</section>
+
+<section id="loot" class="screen hide">
+  <div class="bar"><div class="inner"><div><span class="chapter">Après le match</span><h2 class="ttl">Le coffre</h2></div></div></div>
+  <div class="window"></div>
+  <div class="sheet"><div class="inner">
+    <div id="lootCard"></div>
+    <p class="quote" id="lootTip"></p>
+    <div class="menu" id="lootBtns"><button class="btn primary" id="bEquip">Équiper</button><button class="btn" id="bKeep">Ranger dans le sac</button><button class="btn" id="bSalv">Démonter</button></div>
+  </div></div>
+</section>
+
+<section id="hud" class="hide">
+  <div class="bar"><div class="score">
+    <div class="side me"><span class="nm" id="nmA"></span><span class="ps" id="psA"></span><div class="sbar"><i id="sbA"></i></div></div>
+    <div class="mid"><div class="pts"><span id="ptA">0</span><span class="dash">–</span><span id="ptB">0</span></div><div id="clock">0:00</div><div id="stName"></div></div>
+    <div class="side r"><span class="nm" id="nmB"></span><span class="ps" id="psB"></span><div class="sbar"><i id="sbB"></i></div></div>
+  </div></div>
+  <div class="window"></div>
+  <div class="sheet"><div class="inner" style="gap:10px">
+    <div class="hudrow"><span class="who">Le Borgne</span><div class="ctrls"><button class="btn small" id="bSpeed" aria-pressed="false">×1</button><button class="btn small" id="bSkip">Passer</button></div></div>
+    <span id="ctext"></span>
+  </div></div>
+</section>
+
+<section id="result" class="screen hide">
+  <div class="bar"><div class="inner"><div><span class="chapter">Fin du match</span><h2 id="rTitle"></h2><p id="rScore"></p></div></div></div>
+  <div class="window"></div>
+  <div class="sheet"><div class="inner">
+    <div class="recap plate" id="rRecap"></div>
+    <p id="rLine" class="quote"></p>
+    <div class="menu"><button class="btn primary" id="bResA"></button></div>
+  </div></div>
+</section>
+
+<div id="sheet" class="hide"><div class="shade" id="shShade"></div><div class="sh"><div class="shtop"><span class="ic big" id="shIc"></span><div><div class="nm" id="shNm"></div><div class="meta" id="shMeta"></div></div></div><div id="shStats" class="cmp"></div><p class="perk" id="shPerk"></p><div class="menu" id="shAct"></div></div></div>
+<div id="fade"></div>
+<div id="loading"><div id="ldCh"></div><div id="ldName"></div><p id="ldQuote"></p><div id="ldBar"><i></i>Chargement</div></div>
+<div id="toast"><b>Sauvegarde en cours</b><br>Ne retire pas la carte mémoire. Ni ta tête.</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+"use strict";
+/*__JS__*/
+})();
+</script>
+</body>
+</html>
